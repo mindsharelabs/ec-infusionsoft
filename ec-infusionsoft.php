@@ -145,13 +145,15 @@ class Infusionsoft_API {
 		$template["htmlBody"] = str_replace("_excerpt_", $excerpt, $template["htmlBody"]);
 
 		// Contact ID for bryce@mindsharestudios.com is 10035
-		//$clist[] = 10035;
+		// $clist[] = 10035;
 
 		foreach ($contacts as $contact) {
 			$clist[] = $contact['ContactId'];
 		}
 
-		if($this->app->sendEmail($clist,"info@evolutionarycollective.com","~Contact.Email~", "","","HTML","Evolutionary Collective - New Post: " . $posttitle,$template["htmlBody"],$template["textBody"]) == 1) {
+		$posttitle = str_replace('&#038;', 'and', $posttitle);
+
+		if($this->app->sendEmail($clist,"info@evolutionarycollective.com","~Contact.Email~", "","","HTML","Evolutionary Collective - New Post: " . mb_encode_mimeheader($posttitle, "UTF-8", "B"),$template["htmlBody"],$template["textBody"]) == 1) {
 			return true;
 		} else {
 			return false;
